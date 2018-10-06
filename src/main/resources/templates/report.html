@@ -15,7 +15,11 @@
         <script type="text/javascript" src="js/jquery.js">
             
         </script>
-        <script src="js/menu.js"></script> 
+        <script src="js/menu.js" language="JavaScript"></script>
+        <script src="http://d3js.org/d3.v3.min.js" language="JavaScript"></script>
+    <style>
+        .liquidFillGaugeText { font-family: Helvetica; font-weight: bold; }
+    </style> 
 
 </head>
 <body>
@@ -57,10 +61,9 @@
                   <hr class="my-4">
                   <p>Start the search</p>
                   <div class="input-group mb-3">
-                      <input type="text" class="form-control" placeholder="What do you want to look for?" aria-label="What do you want to look for?" aria-describedby="button-addon2">
+                      <input type="text" id="busqueda" class="form-control" placeholder="What do you want to look for?" aria-label="What do you want to look for?" aria-describedby="button-addon2">
                       <div class="input-group-append">
-                        <button class="btn btn-outline-secondary" type="button" id="button-addon2">Search
-                        </button>
+                        		  <input type="button" value="Buscar" id="buscar">
                           </div>
                   </div>
                 </div>
@@ -107,38 +110,51 @@
                 <script src="http://d3js.org/d3.v3.min.js"></script>
 
                 <!-- Contenedor de la grafica -->
+                <div class="contenedor-magnitudes row">
+                    	<div class="magnitud col-md-4">
+                    	<div class="burbuja">
+                            <svg id="fillgauge5" width="100%" height="200"></svg>
+                        </div>
+                        </div>
+                         <div class="magnitud col-md-4">
+                         <div class="burbuja">
+                            <svg id="fillgauge6" width="100%" height="200"></svg>
+                        </div>
+                        </div>
+                         <div class="magnitud col-md-4">
+                         <div class="burbuja">
+                            <svg id="fillgauge7" width="100%" height="200"></svg>
+                         </div>   
+                        </div>
+                </div>
                 <div class="row">
                     <div class="dashboard col-md-6">
                         <div  id='dashboard'>
                         </div>
+                        
                     </div>
                     <div class="tweets-container col-md-6">
                         <div class="contenedor-titulo-tweets">
                             <h1>Tweets de mayor magnitud</h1>
                          </div>
                          <div>
-                             <table class="table">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col"></th>
-      <th scope="col">Last</th>
-      
-    </tr>
-  </thead>
-  <tbody>
-    
-    <tr>
-      <th scope="row">3</th>
-      <td>Larry</td>
-      <td>@twitter</td>
-    </tr>
-  </tbody>
-</table>
+                             <table class="table" id="tablaT">
+							  <thead>
+							    <tr>
+							      <th scope="col">Tweets</th>
+							      <th scope="col">Score</th>
+							      <th scope="col">Magnitud</th>
+							      
+							    </tr>
+							  </thead>
+							  
+							</table>
                          </div>
                     </div>
                 </div>
 <script>
+
+
 function dashboard(id, fData){
     var barColor = 'steelblue';
     function segColor(c){ return {low:"#807dba", mid:"#e08214",high:"#41ab5d"}[c]; }
@@ -195,7 +211,7 @@ function dashboard(id, fData){
             // filter for selected state.
             var st = fData.filter(function(s){ return s.State == d[0];})[0],
                 nD = d3.keys(st.freq).map(function(s){ return {type:s, freq:st.freq[s]};});
-               
+            
             // call update functions of pie-chart and legend.    
             pC.update(nD);
             leg.update(nD);
@@ -338,17 +354,104 @@ function dashboard(id, fData){
 }
 </script>
 
-<script>
+<script language="JavaScript">
+var config1 = liquidFillGaugeDefaultSettings();
+config1.circleColor = "#FF7777";
+config1.textColor = "#FF4444";
+config1.waveTextColor = "#FFAAAA";
+config1.waveColor = "#FFDDDD";
+config1.circleThickness = 0.2;
+config1.textVertPosition = 0.2;
+config1.waveAnimateTime = 1000;
 
-var freqData=[
-{State:'AL',freq:{low:4786, mid:1319, high:249}}
-,{State:'AZ',freq:{low:1101, mid:412, high:674}}
-,{State:'CT',freq:{low:932, mid:2149, high:418}}
-,{State:'DE',freq:{low:232, mid:1152, high:1862}}
+var config3 = liquidFillGaugeDefaultSettings();
+config3.textVertPosition = 0.8;
+config3.waveAnimateTime = 5000;
+config3.waveHeight = 0.15;
+config3.waveAnimate = false;
+config3.waveOffset = 0.25;
+config3.valueCountUp = false;
+config3.displayPercent = false;
+var config4 = liquidFillGaugeDefaultSettings();
+config4.circleThickness = 0.15;
+config4.circleColor = "#808015";
+config4.textColor = "#555500";
+config4.waveTextColor = "#FFFFAA";
+config4.waveColor = "#AAAA39";
+config4.textVertPosition = 0.8;
+config4.waveAnimateTime = 1000;
+config4.waveHeight = 0.05;
+config4.waveAnimate = true;
+config4.waveRise = false;
+config4.waveHeightScaling = false;
+config4.waveOffset = 0.25;
+config4.textSize = 0.75;
+config4.waveCount = 3;
+var gauge5 = loadLiquidFillGauge("fillgauge5", 60.44, config4);
+var gauge6 = loadLiquidFillGauge("fillgauge6", 60.44, config4);
+var gauge7 = loadLiquidFillGauge("fillgauge7", 60.44, config4);
+var config5 = liquidFillGaugeDefaultSettings();
+config5.circleThickness = 0.4;
+config5.circleColor = "#6DA398";
+config5.textColor = "#0E5144";
+config5.waveTextColor = "#6DA398";
+config5.waveColor = "#246D5F";
+config5.textVertPosition = 0.52;
+config5.waveAnimateTime = 5000;
+config5.waveHeight = 0;
+config5.waveAnimate = false;
+config5.waveCount = 2;
+config5.waveOffset = 0.25;
+config5.textSize = 1.2;
+config5.minValue = 30;
+config5.maxValue = 150
+config5.displayPercent = false;
 
-];
 
-dashboard('#dashboard',freqData);
+
+$(document).ready(function(){
+    $("#buscar").click(function(event) {
+	
+	$("#dashboard").empty();
+	$("#tablaT").empty();	
+
+    	$.getJSON("/consultaFake", function(datos) {
+    		
+    		
+    		console.log(datos);
+    		  var positivo = datos.positivos;
+    		  var negativo = datos.negativos;
+    		 var neutro = datos.neutrales;
+    		console.log(positivo);
+    		var datosTweet = '';
+    		
+            $.each(datos.tweets, function (key, val) {
+            	datosTweet += '<tr>';
+            	datosTweet += "<td>" + val.textoAnalizar + "</td>";
+            	datosTweet += "<td>" + val.score + "</td>";
+            	datosTweet += "<td>" + val.magnitud + "</td>";
+            	datosTweet += '</tr>';
+
+            });
+            $('#tablaT').append(datosTweet);
+            
+            var freqData=[
+            	{State:'AL',freq:{low:negativo, mid:neutro, high:positivo}}
+            	];
+            	console.log(freqData);
+
+            	dashboard('#dashboard',freqData);
+            	gauge5.update(positivo);
+                gauge6.update(negativo);
+                gauge7.update(neutro);
+    	});
+ 
+    });
+
+});
+
+
+
 </script>
             </section>
         </div>
